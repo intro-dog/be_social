@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
-import { FaUser } from "react-icons/fa"
+import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa"
 import {
   MdDriveFileRenameOutline,
   MdOutlineMail,
@@ -22,6 +22,8 @@ const SignUpPage = () => {
     fullName: "",
     password: "",
   })
+  const [showPassword, setShowPassword] = useState(false)
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -31,6 +33,11 @@ const SignUpPage = () => {
       [e.target.name]: e.target.value,
     })
   }
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     dispatch(signup(formData))
@@ -64,7 +71,7 @@ const SignUpPage = () => {
           <form onSubmit={handleSubmit} className="form">
             <h1 className="form__title">Join today.</h1>
 
-            <label htmlFor="email">
+            <label className="email" htmlFor="email">
               <MdOutlineMail size={25} />
               <input
                 type="email"
@@ -77,7 +84,7 @@ const SignUpPage = () => {
               />
             </label>
 
-            <label htmlFor="username">
+            <label className="username" htmlFor="username">
               <FaUser size={25} />
               <input
                 type="text"
@@ -90,7 +97,7 @@ const SignUpPage = () => {
               />
             </label>
 
-            <label htmlFor="fullName">
+            <label className="fullname" htmlFor="fullName">
               <MdDriveFileRenameOutline size={25} />
               <input
                 type="text"
@@ -103,10 +110,10 @@ const SignUpPage = () => {
               />
             </label>
 
-            <label htmlFor="password">
+            <label htmlFor="password" className="password">
               <MdPassword size={25} />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 id="password"
                 name="password"
@@ -114,6 +121,12 @@ const SignUpPage = () => {
                 onChange={handleInputChange}
                 value={formData.password}
               />
+              <span
+                onClick={togglePasswordVisibility}
+                className="password-toggle-icon"
+              >
+                {showPassword ? <FaEye size={20} /> : <FaEyeSlash size={20} />}
+              </span>
             </label>
 
             <button type="submit">Sign Up</button>

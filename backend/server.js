@@ -24,18 +24,18 @@ app.use(
 )
 
 app.use((err, req, res, next) => {
-  console.error(err.stack) // Log the error stack
+  console.error(err.stack)
   if (err.status === 413) {
-    res.status(413).send("Payload too large")
-  } else {
-    res.status(err.status || 500).send(err.message || "Internal Server Error")
+    return res.status(413).json({ error: "Payload too large" })
   }
+  res
+    .status(err.status || 500)
+    .json({ error: err.message || "Internal Server Error" })
 })
 
-app.use(bodyParser.json())
 app.use(cookieParser())
-app.use(express.json({ limit: "50mb" }))
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ limit: "20mb" }))
+app.use(express.urlencoded({ limit: "20mb", extended: true }))
 
 app.use("/api", require("./routes/authRoutes"))
 app.use("/api", require("./routes/userRoutes"))

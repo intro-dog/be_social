@@ -34,7 +34,7 @@ class userController {
         },
         {
           $sample: {
-            size: 10,
+            size: 5,
           },
         },
       ])

@@ -19,6 +19,7 @@ const CreatePost = () => {
   })
 
   const imgRef = useRef(null)
+  const textareaRef = useRef(null)
 
   useEffect(() => {
     if (errorMessage) {
@@ -53,6 +54,7 @@ const CreatePost = () => {
 
   const addEmojiToText = (emoji) => {
     setData((prevData) => ({ ...prevData, text: prevData.text + emoji }))
+    textareaRef.current.focus()
   }
 
   return (
@@ -69,6 +71,7 @@ const CreatePost = () => {
             className="create-post__textarea"
             placeholder="What's on your mind?"
             value={data.text}
+            ref={textareaRef}
             rows="5"
             onChange={(e) =>
               setData((prevData) => ({ ...prevData, text: e.target.value }))

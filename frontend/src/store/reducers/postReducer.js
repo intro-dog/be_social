@@ -8,7 +8,7 @@ export const get_all_posts = createAsyncThunk(
       const { data } = await api.get("/all", {
         withCredentials: true,
       })
-      console.log("get_all_posts", data)
+      // console.log("get_all_posts", data)
       return fulfillWithValue(data)
     } catch (error) {
       return rejectWithValue(error.response.data)
@@ -23,7 +23,7 @@ export const get_user_posts = createAsyncThunk(
       const { data } = await api.get(`/user/${username}`, {
         withCredentials: true,
       })
-      console.log("get_user_posts", data)
+      // console.log("get_user_posts", data)
       return fulfillWithValue(data)
     } catch (error) {
       return rejectWithValue(error.response.data)
@@ -35,11 +35,11 @@ export const create_post = createAsyncThunk(
   "post/create_post",
   async (info, { rejectWithValue, fulfillWithValue }) => {
     try {
-      console.log("create_post", info)
+      // console.log("create_post", info)
       const { data } = await api.post("/create", info, {
         withCredentials: true,
       })
-      console.log("create_post", data)
+      // console.log("create_post", data)
       return fulfillWithValue(data)
     } catch (error) {
       if (error.response.status === 413) {
@@ -54,7 +54,7 @@ export const delete_post = createAsyncThunk(
   "post/delete_post",
   async (id, { rejectWithValue, fulfillWithValue }) => {
     try {
-      console.log("id", id)
+      // console.log("id", id)
       const { data } = await api.delete(`/delete/${id}`, {
         withCredentials: true,
       })

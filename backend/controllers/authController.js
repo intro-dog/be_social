@@ -6,19 +6,46 @@ const bcrypt = require("bcrypt")
 class authController {
   signup = async (req, res) => {
     const { email, fullName, password, username } = req.body
-
-    if (!password) {
-      return responseReturn(res, 400, { error: "Password is required" })
-    }
-
     try {
       const userEmail = await userModel.findOne({ email })
       const userName = await userModel.findOne({ username })
-      if (userEmail) {
-        return responseReturn(res, 404, { error: "Email Already Exists" })
+
+      if (!email) {
+        return responseReturn(res, 400, { error: "Email is required" })
       }
+
+      if (!username) {
+        return responseReturn(res, 400, { error: "Username is required" })
+      }
+
+      if (!fullName) {
+        return responseReturn(res, 400, { error: "Fullname is required" })
+      }
+
+      if (!password) {
+        return responseReturn(res, 400, { error: "Password is required" })
+      }
+
+      if (password.length < 6) {
+        return responseReturn(res, 400, {
+          error: "Password must be at least 6 characters",
+        })
+      }
+
+      // Регулярний вираз для перевірки пароля (лише букви та цифри)
+      const passwordRegex = /^[A-Za-z0-9]+$/
+      if (!passwordRegex.test(password)) {
+        return responseReturn(res, 400, {
+          error: "Password must contain only letters and numbers",
+        })
+      }
+
+      if (userEmail) {
+        return responseReturn(res, 404, { error: "Email already exists" })
+      }
+
       if (userName) {
-        return responseReturn(res, 404, { error: "Username Already Exists" })
+        return responseReturn(res, 404, { error: "Username already exists" })
       }
 
       const hashedPassword = await bcrypt.hash(password, 10)
