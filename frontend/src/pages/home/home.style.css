@@ -20,7 +20,7 @@
   .sidebar {
     width: 200px;
     height: 250px;
-    background-color: #262424;
+    background-color: #3b3a3a;
     color: #fff;
     border-radius: 0 10px 10px 0;
     position: fixed;
@@ -37,24 +37,3 @@
     cursor: pointer;
   }
 }
-/* @media (max-width: 425px) {
-  .action__emoji {
-    position: relative;
-    cursor: pointer;
-  }
-  .emoji-picker {
-    top: -180px;
-    left: -40px;
-    position: absolute;
-    visibility: hidden;
-    opacity: 0;
-    z-index: -1;
-  }
-
-  .action__emoji:hover .emoji-picker {
-    z-index: 50;
-    visibility: visible;
-    opacity: 1;
-    transition: opacity 0.3s;
-  }
-} */

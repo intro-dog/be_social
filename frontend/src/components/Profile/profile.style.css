@@ -74,10 +74,6 @@
   transition: opacity 0.3s ease;
 }
 
-.profile__img:hover .profile__overlay {
-  opacity: 1;
-}
-
 .profile__edit {
   color: black;
   cursor: pointer;
@@ -132,6 +128,7 @@
 }
 .posts__username {
   font-size: 14px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #666;
 }
 .posts__date {
@@ -152,7 +149,7 @@ hr {
 
 /* posts */
 .profile__posts {
-  padding: 20px 0 20px 40px;
+  padding: 20px 0 20px 20px;
 }
 .posts__avatar img {
   width: 32px;
@@ -177,6 +174,14 @@ hr {
 .posts__info__content {
   width: 100%;
 }
+.content__items {
+  padding: 10px 0 10px 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px,
+    rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px,
+    rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+}
 .posts__info__header {
   width: 100%;
   display: flex;
@@ -185,11 +190,13 @@ hr {
 }
 .posts__actions {
   transition: transform 0.3s;
+  margin-right: 10px;
   cursor: pointer;
 }
-.posts__actions:hover {
-  transform: scale(1.1);
+.posts__description__img {
+  padding: 0 10px;
 }
+
 .posts__description__img img {
   width: 100%;
   aspect-ratio: 16/9;
@@ -201,7 +208,6 @@ hr {
 .posts__stats {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
   gap: 10px;
 }
 .stats__info {
@@ -225,5 +231,27 @@ hr {
   .details__icons {
     display: flex;
     gap: 5px;
+  }
+}
+
+@media (max-width: 768px) {
+  .posts {
+    padding-left: 20px;
+  }
+}
+
+@media (max-width: 420px) {
+  .posts {
+    padding-left: 5px;
+  }
+}
+
+@media (any-hover: hover) {
+  .profile__img:hover .profile__overlay {
+    opacity: 1;
+  }
+
+  .posts__actions:hover {
+    transform: scale(1.1);
   }
 }

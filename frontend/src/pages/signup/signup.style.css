@@ -65,9 +65,6 @@
   font-size: 18px;
   transition: background-color 0.3s;
 }
-.form button:hover {
-  background-color: #4c4c4d;
-}
 
 .form__link {
   display: flex;
@@ -86,6 +83,37 @@
   font-size: 14px;
   transition: all 0.3s;
 }
-.link:hover {
-  background-color: #dcdcdf;
+
+@media (any-hover: hover) {
+  .form button:hover {
+    background-color: #4c4c4d;
+  }
+
+  .link:hover {
+    background-color: #dcdcdf;
+  }
+}
+
+@media (max-width: 768px) {
+  .signup__container {
+    padding: 10px 5px;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .form {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .signup__container {
+    padding: 10px 10px;
+  }
+  .signup__form {
+    width: 100%;
+  }
+  .form label {
+    font-size: 14px;
+    width: 100%;
+  }
 }

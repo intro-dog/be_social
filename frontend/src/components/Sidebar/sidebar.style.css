@@ -26,6 +26,33 @@
 }
 .nav__link {
   display: flex;
+  padding: 5px 10px;
+  border-radius: 10px;
   align-items: center;
+  transition: box-shadow 0.3s;
   gap: 5px;
+}
+.sidebar__logout {
+  width: 70%;
+  padding: 5px 10px;
+  border-radius: 10px;
+  transition: box-shadow 0.3s;
+}
+.nav__link.active {
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+@media (any-hover: hover) {
+  .nav__link:hover {
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+  }
+  .sidebar__logout:hover {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+      rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+      rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  }
+  .navlink--mobile:hover {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+      rgba(240, 237, 237, 0.8) 0px 7px 13px -3px,
+      rgba(211, 207, 207, 0.2) 0px -3px 0px inset;
+  }
 }

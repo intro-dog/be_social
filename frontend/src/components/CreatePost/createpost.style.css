@@ -33,9 +33,7 @@
   cursor: pointer;
   transition: transform 0.3s;
 }
-.create-post__icon:hover {
-  transform: scale(1.1);
-}
+
 .create-post__content {
   flex: 1 1 auto;
 }
@@ -58,9 +56,7 @@
   z-index: 50;
   transition: transform 0.3s;
 }
-.actions__icon:hover {
-  transform: scale(1.1);
-}
+
 .actions__icons {
   display: flex;
   gap: 10px;
@@ -96,10 +92,19 @@
   transition: transform 0.2s;
 }
 
-.emoji__items span:hover {
-  transform: scale(1.2);
-}
 /* emoji */
 .button {
   z-index: 49;
+}
+
+@media (any-hover: hover) {
+  .create-post__icon:hover {
+    transform: scale(1.1);
+  }
+  .actions__icon:hover {
+    transform: scale(1.1);
+  }
+  .emoji__items span:hover {
+    transform: scale(1.2);
+  }
 }

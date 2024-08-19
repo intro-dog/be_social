@@ -172,7 +172,7 @@ const ProfilePage = () => {
             )}
             <div className="posts__content">
               {posts?.map((post, index) => (
-                <div key={index}>
+                <div className="content__items" key={index}>
                   <div className="posts__item">
                     <div className="posts__avatar">
                       <img
@@ -226,7 +226,6 @@ const ProfilePage = () => {
                       <span>{post?.likes?.length}</span>
                     </div>
                   </div>
-                  <hr />
                 </div>
               ))}
             </div>

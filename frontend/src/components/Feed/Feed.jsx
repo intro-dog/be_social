@@ -34,7 +34,7 @@ const Feed = () => {
             </span>
           )}
           {posts?.map((post, index) => (
-            <div key={index}>
+            <div className="content__items" key={index}>
               <div className="posts__item">
                 <div className="posts__avatar">
                   <img
@@ -50,10 +50,10 @@ const Feed = () => {
                           to={`/profile/${post?.user?.username}`}
                           className="posts__name underline"
                         >
-                          {`${post?.user?.fullName} ⋅`}
+                          {`${post?.user?.fullName} ⋅ `}
                         </Link>
                         <span className="posts__username">
-                          @{`${post?.user?.username} ⋅`}
+                          @{`${post?.user?.username} ⋅ `}
                         </span>
                         <span className="posts__date">
                           {formatDate(post?.createdAt)}
@@ -89,7 +89,6 @@ const Feed = () => {
                   <span>{post?.likes?.length}</span>
                 </div>
               </div>
-              <hr />
             </div>
           ))}
         </div>

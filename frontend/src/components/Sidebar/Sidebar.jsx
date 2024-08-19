@@ -3,7 +3,7 @@ import { FaUser } from "react-icons/fa"
 import { IoMdHome } from "react-icons/io"
 import { IoMenu, IoNotifications } from "react-icons/io5"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { logout } from "../../store/reducers/authReducer"
 import "./sidebar.style.css"
 
@@ -12,6 +12,7 @@ const Sidebar = () => {
   const { userInfo } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen)
@@ -22,6 +23,8 @@ const Sidebar = () => {
     navigate("/login")
   }
 
+  const isActive = (path) => location.pathname === path
+
   return (
     <div className={`sidebar ${isOpen ? "open" : ""}`}>
       <div className="sidebar__logo">
@@ -31,21 +34,41 @@ const Sidebar = () => {
 
       <nav className="nav">
         <ul className="nav__list">
-          <Link className="nav__link" to="/">
+          <Link
+            className={`nav__link ${isActive("/") ? "active" : ""} ${
+              isOpen ? "navlink--mobile" : ""
+            }`}
+            to="/"
+          >
             <IoMdHome size={20} />
             Home
           </Link>
-          <Link className="nav__link" to={`/profile/${userInfo?.username}`}>
+          <Link
+            className={`nav__link ${
+              isActive(`/profile/${userInfo?.username}`) ? "active" : ""
+            } ${isOpen ? "navlink--mobile" : ""}`}
+            to={`/profile/${userInfo?.username}`}
+          >
             <FaUser size={20} />
             Profile
           </Link>
-          <Link className="nav__link" to="/notifications">
+          <Link
+            className={`nav__link ${
+              isActive("/notifications") ? "active" : ""
+            } ${isOpen ? "navlink--mobile" : ""}`}
+            to="/notifications"
+          >
             <IoNotifications size={20} />
             Notifications
           </Link>
         </ul>
       </nav>
-      <button onClick={logoutHandler}>{userInfo && "Logout"}</button>
+      <button
+        className={`sidebar__logout ${isOpen ? "navlink--mobile" : ""}`}
+        onClick={logoutHandler}
+      >
+        {userInfo && "Logout"}
+      </button>
     </div>
   )
 }
