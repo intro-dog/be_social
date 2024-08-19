@@ -1,0 +1,31 @@
+.sidebar {
+  padding-left: 15px;
+  width: 200px;
+  position: fixed;
+}
+.sidebar__logo {
+  display: flex;
+  justify-content: space-between;
+}
+.sidebar__menu {
+  display: none;
+}
+.sidebar img {
+  width: 60%;
+  height: 40px;
+  margin-bottom: 15px;
+}
+
+.nav__list {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.nav__link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

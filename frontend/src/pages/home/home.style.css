@@ -1,0 +1,60 @@
+.home {
+  padding: 10px 15px 10px 0;
+  display: flex;
+  gap: 50px;
+}
+
+@media (max-width: 768px) {
+  .home,
+  .profile {
+    padding-left: 10px;
+    gap: 10px;
+    width: 100%;
+    margin: 0;
+  }
+  .feed {
+    padding-left: 22px;
+    width: 100%;
+    margin: 0;
+  }
+  .sidebar {
+    width: 200px;
+    height: 250px;
+    background-color: #262424;
+    color: #fff;
+    border-radius: 0 10px 10px 0;
+    position: fixed;
+    top: 0;
+    left: -175px;
+    z-index: 9999;
+    transition: left 0.3s ease;
+  }
+  .sidebar.open {
+    left: 0;
+  }
+  .sidebar__menu {
+    display: block;
+    cursor: pointer;
+  }
+}
+/* @media (max-width: 425px) {
+  .action__emoji {
+    position: relative;
+    cursor: pointer;
+  }
+  .emoji-picker {
+    top: -180px;
+    left: -40px;
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    z-index: -1;
+  }
+
+  .action__emoji:hover .emoji-picker {
+    z-index: 50;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+} */
