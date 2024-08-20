@@ -86,6 +86,12 @@ export const postReducer = createSlice({
       state.posts = payload
       state.isLoading = false
     })
+    builder.addCase(get_all_posts.pending, (state, { payload }) => {
+      state.isLoading = true
+    })
+    builder.addCase(get_all_posts.rejected, (state, { payload }) => {
+      state.isLoading = false
+    })
 
     builder.addCase(get_user_posts.pending, (state, { payload }) => {
       state.isLoading = true

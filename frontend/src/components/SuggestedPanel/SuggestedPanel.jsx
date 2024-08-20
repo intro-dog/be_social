@@ -7,7 +7,6 @@ import "./suggested.style.css"
 
 const SuggestedPanel = () => {
   const { isLoading, users } = useSelector((state) => state.user)
-  console.log("users", users)
 
   const dispatch = useDispatch()
 

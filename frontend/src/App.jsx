@@ -10,7 +10,7 @@ import NotificationsPage from "./pages/notifications/NotificationsPage"
 import SignUpPage from "./pages/signup/SignUpPage"
 function App() {
   const { isLoading } = useSelector((state) => state.auth)
-
+  const token = localStorage.getItem("token")
   return (
     <BrowserRouter>
       {isLoading && (
@@ -20,6 +20,8 @@ function App() {
       )}
       <Routes>
         <Route path="*" element={<h1>404</h1>} />
+        {token && <Route path="/" element={<HomePage />} />}
+        {!token && <Route path="/login" element={<LoginPage />} />}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />

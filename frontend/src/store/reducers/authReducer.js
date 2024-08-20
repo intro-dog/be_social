@@ -165,7 +165,7 @@ export const authReducer = createSlice({
     builder.addCase(get_me.rejected, (state, { payload }) => {
       state.errorMessage =
         payload?.error || payload?.message || "Something went wrong"
-      state.isUpdating = false
+      state.isLoading = false
     })
 
     builder.addCase(update_user.pending, (state, { payload }) => {

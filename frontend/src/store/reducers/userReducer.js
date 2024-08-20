@@ -42,6 +42,9 @@ export const userReducer = createSlice({
     builder.addCase(get_suggested_users.pending, (state, { payload }) => {
       state.isLoading = true
     })
+    builder.addCase(get_suggested_users.rejected, (state, { payload }) => {
+      state.isLoading = false
+    })
     builder.addCase(get_suggested_users.fulfilled, (state, { payload }) => {
       state.isLoading = false
       state.users = payload
@@ -49,6 +52,10 @@ export const userReducer = createSlice({
 
     builder.addCase(get_user_profile.pending, (state, { payload }) => {
       state.isLoading = true
+    })
+
+    builder.addCase(get_user_profile.rejected, (state, { payload }) => {
+      state.isLoading = false
     })
 
     builder.addCase(get_user_profile.fulfilled, (state, { payload }) => {
