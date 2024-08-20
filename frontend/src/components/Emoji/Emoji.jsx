@@ -5,13 +5,19 @@ import { animals, faces, symbols } from "../../utils/emojis/emoji"
 const Emoji = ({ addEmojiToText }) => {
   const [showPicker, setShowPicker] = useState(false)
   const pickerRef = useRef(null)
+  const iconRef = useRef(null)
 
   const handleEmojiClick = (emoji) => {
     addEmojiToText(emoji)
   }
 
   const handleClickOutside = (event) => {
-    if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+    if (
+      pickerRef.current &&
+      !pickerRef.current.contains(event.target) &&
+      iconRef.current &&
+      !iconRef.current.contains(event.target)
+    ) {
       setShowPicker(false)
     }
   }
@@ -23,9 +29,14 @@ const Emoji = ({ addEmojiToText }) => {
     }
   }, [])
 
+  const togglePicker = (event) => {
+    event.stopPropagation()
+    setShowPicker((prevState) => !prevState)
+  }
+
   return (
-    <div className="emoji__icon">
-      <FaRegSmile size={20} onClick={() => setShowPicker(!showPicker)} />
+    <div className="emoji__icon" ref={iconRef}>
+      <FaRegSmile size={20} onClick={togglePicker} />
       {showPicker && (
         <div className="emoji__picker" ref={pickerRef}>
           <div className="emoji__items">

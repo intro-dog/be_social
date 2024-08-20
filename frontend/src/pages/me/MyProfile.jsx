@@ -8,25 +8,21 @@ import {
 } from "react-icons/fa"
 import { MdDeleteOutline, MdEdit } from "react-icons/md"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { FadeLoader } from "react-spinners"
+import Sidebar from "../../components/Sidebar/Sidebar"
+import { get_me, update_user } from "../../store/reducers/authReducer"
 import { get_user_posts } from "../../store/reducers/postReducer"
-import { get_user_profile } from "../../store/reducers/userReducer"
+import EditProfile from "./../../components/Profile/EditProfile"
 import { formatDate } from "./../../utils/formatDate/formatDate"
-import Sidebar from "./../Sidebar/Sidebar"
-import EditProfile from "./EditProfile"
-import "./profile.style.css"
-const ProfilePage = () => {
+const MyProfile = () => {
+  const { user } = useSelector((state) => state.auth)
+  const { posts, isLoading } = useSelector((state) => state.post)
+
   const [coverImg, setCoverImg] = useState(null)
   const [profileImg, setProfileImg] = useState(null)
   const coverImgRef = useRef(null)
   const profileImgRef = useRef(null)
-
-  const { userInfo } = useSelector((state) => state.auth)
-  const { user } = useSelector((state) => state.user)
-  const { posts, isLoading } = useSelector((state) => state.post)
-  const { username } = useParams()
-  const isMyProfile = username === userInfo?.username
 
   const dispatch = useDispatch()
   const handleImgChange = (e, state) => {
@@ -41,13 +37,15 @@ const ProfilePage = () => {
     }
   }
 
-  useEffect(() => {
-    dispatch(get_user_profile(username))
-  }, [])
+  const handleUpdate = async () => {
+    dispatch(update_user({ coverImg, profileImg }))
+  }
 
   useEffect(() => {
-    dispatch(get_user_posts(username))
-  }, [])
+    dispatch(get_me())
+
+    dispatch(get_user_posts(user?.username))
+  }, [user?.username])
 
   return (
     <>
@@ -67,13 +65,12 @@ const ProfilePage = () => {
             <Link to="/" className="profile__back">
               <FaArrowLeft size={20} />
             </Link>
-            {isMyProfile && (
-              <MdEdit
-                className="cover__edit"
-                size={30}
-                onClick={() => coverImgRef.current.click()}
-              />
-            )}
+
+            <MdEdit
+              className="cover__edit"
+              size={30}
+              onClick={() => coverImgRef.current.click()}
+            />
 
             <input
               className="cover__input"
@@ -96,15 +93,14 @@ const ProfilePage = () => {
               src={profileImg || user?.profileImg || "/avatar-placeholder.png"}
               alt="profile image"
             />
-            {isMyProfile && (
-              <div className="profile__overlay">
-                <MdEdit
-                  className="profile__edit"
-                  size={30}
-                  onClick={() => profileImgRef.current.click()}
-                />
-              </div>
-            )}
+
+            <div className="profile__overlay">
+              <MdEdit
+                className="profile__edit"
+                size={30}
+                onClick={() => profileImgRef.current.click()}
+              />
+            </div>
           </div>
 
           <div className="profile__info">
@@ -148,10 +144,11 @@ const ProfilePage = () => {
               </div>
             </div>
             <div className="profile__info__actions">
-              {isMyProfile && <EditProfile user={userInfo} />}
-
+              <EditProfile user={user} />
               {(coverImg || profileImg) && (
-                <button className="update__btn">Update</button>
+                <button className="update__btn" onClick={handleUpdate}>
+                  Update
+                </button>
               )}
             </div>
           </div>
@@ -181,7 +178,7 @@ const ProfilePage = () => {
                         <div className="posts__info__header header__info">
                           <div className="header__info">
                             <Link
-                              to={`/profile/${post?.user?.username}`}
+                              to={`/me/${post?.user?.username}`}
                               className="posts__name underline"
                             >
                               {`${post?.user?.fullName} ⋅`}
@@ -193,11 +190,10 @@ const ProfilePage = () => {
                               {formatDate(post?.createdAt)}
                             </span>
                           </div>
-                          {userInfo.id === post?.user?._id && (
-                            <div className="posts__actions">
-                              <MdDeleteOutline size={20} />
-                            </div>
-                          )}
+
+                          <div className="posts__actions">
+                            <MdDeleteOutline size={20} />
+                          </div>
                         </div>
                         <div className="posts__text">
                           <span className="posts__text">{post?.text}</span>
@@ -232,4 +228,4 @@ const ProfilePage = () => {
   )
 }
 
-export default ProfilePage
+export default MyProfile

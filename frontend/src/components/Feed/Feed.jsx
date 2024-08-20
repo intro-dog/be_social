@@ -47,7 +47,11 @@ const Feed = () => {
                     <div className="posts__info__header header__info">
                       <div className="header__info">
                         <Link
-                          to={`/profile/${post?.user?.username}`}
+                          to={
+                            userInfo?._id === post?.user?._id
+                              ? `/me/${userInfo?.username}`
+                              : `/profile/${post?.user?.username}`
+                          }
                           className="posts__name underline"
                         >
                           {`${post?.user?.fullName} ⋅ `}
@@ -59,7 +63,7 @@ const Feed = () => {
                           {formatDate(post?.createdAt)}
                         </span>
                       </div>
-                      {userInfo.id === post?.user?._id && (
+                      {userInfo._id === post?.user?._id && (
                         <div className="posts__actions">
                           <MdDeleteOutline
                             size={20}

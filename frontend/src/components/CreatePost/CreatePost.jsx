@@ -100,7 +100,7 @@ const CreatePost = () => {
               </div>
             </div>
             <input type="file" hidden ref={imgRef} onChange={handleImgChange} />
-            <button className="button">
+            <button className="create-post__btn">
               {isLoading ? "Posting..." : "Post"}
             </button>
           </div>

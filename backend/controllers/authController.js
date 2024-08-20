@@ -58,7 +58,7 @@ class authController {
       })
 
       const token = await createToken({
-        id: newUser.id,
+        _id: newUser._id,
         email: newUser.email,
         username: newUser.username,
         fullName: newUser.fullName,
@@ -69,6 +69,8 @@ class authController {
         link: newUser.link,
         bio: newUser.bio,
         likedPosts: newUser.likedPosts,
+        createdAt: newUser.createdAt,
+        updatedAt: newUser.updatedAt,
       })
 
       res.cookie("token", token, {
@@ -102,16 +104,16 @@ class authController {
       }
 
       const token = await createToken({
-        id: user.id,
+        _id: user._id,
         email: user.email,
         username: user.username,
         fullName: user.fullName,
         followers: user.followers,
         following: user.following,
-        profileImg: user.profileImg,
         coverImg: user.coverImg,
-        bio: user.bio,
+        profileImg: user.profileImg,
         link: user.link,
+        bio: user.bio,
         likedPosts: user.likedPosts,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,

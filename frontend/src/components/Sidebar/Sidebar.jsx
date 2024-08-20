@@ -1,15 +1,16 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { FaUser } from "react-icons/fa"
 import { IoMdHome } from "react-icons/io"
 import { IoMenu, IoNotifications } from "react-icons/io5"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { logout } from "../../store/reducers/authReducer"
+import { get_me, logout } from "../../store/reducers/authReducer"
 import "./sidebar.style.css"
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const { userInfo } = useSelector((state) => state.auth)
+  const { userInfo, user } = useSelector((state) => state.auth)
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
@@ -23,7 +24,15 @@ const Sidebar = () => {
     navigate("/login")
   }
 
+  useEffect(() => {
+    dispatch(get_me())
+  }, [])
+
   const isActive = (path) => location.pathname === path
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
 
   return (
     <div className={`sidebar ${isOpen ? "open" : ""}`}>
@@ -45,9 +54,9 @@ const Sidebar = () => {
           </Link>
           <Link
             className={`nav__link ${
-              isActive(`/profile/${userInfo?.username}`) ? "active" : ""
+              isActive(`/me/${user?.username}`) ? "active" : ""
             } ${isOpen ? "navlink--mobile" : ""}`}
-            to={`/profile/${userInfo?.username}`}
+            to={`/me/${user?.username}`}
           >
             <FaUser size={20} />
             Profile

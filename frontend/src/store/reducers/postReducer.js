@@ -70,7 +70,6 @@ export const postReducer = createSlice({
   initialState: {
     isDeleting: false,
     isLoading: false,
-    userPosts: [],
     posts: [],
     post: {},
     errorMessage: "",

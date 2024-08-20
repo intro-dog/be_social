@@ -7,6 +7,8 @@ import "./suggested.style.css"
 
 const SuggestedPanel = () => {
   const { isLoading, users } = useSelector((state) => state.user)
+  console.log("users", users)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -54,7 +56,7 @@ const SuggestedPanel = () => {
                   @{user.username}
                 </span>
 
-                <button className="button">Follow</button>
+                <button className="suggest__btn">Follow</button>
               </div>
             </Link>
           ))}

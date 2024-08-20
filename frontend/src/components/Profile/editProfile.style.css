@@ -1,0 +1,135 @@
+body.modal-open {
+  overflow: hidden;
+}
+.edit__profile--btn {
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px,
+    rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+    rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+}
+.edit__profile__modal {
+  width: 70%;
+  border-radius: 10px;
+  padding: 30px 20px;
+  margin: 50px auto;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+.edit__profile__modal__header {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+.edit__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.edit__profile__title {
+  font-size: 20px;
+  font-weight: 900;
+}
+.edit__profile__updatedAd {
+  font-size: 12px;
+  color: #666;
+}
+.close__icon {
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.label__fullname,
+.label__username,
+.label__email,
+.label__bio,
+.label__link {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.edit__form {
+  text-align: right;
+}
+.edit__form input {
+  width: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 10px 7px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.items__name,
+.items__description,
+.items__password {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.edit__form__email {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.label__email {
+  text-align: left;
+}
+.items__name label,
+.items__description label,
+.items__password label {
+  text-align: left;
+  width: 50%;
+}
+
+.edit__form__btn {
+  padding: 10px;
+  text-align: right;
+  border-radius: 10px;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px,
+    rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+}
+
+@media (any-hover: hover) {
+  .close__icon:hover {
+    transform: scale(1.1);
+  }
+
+  .edit__form__btn:hover {
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
+      rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+  }
+  .edit__profile--btn:hover {
+    transition: box-shadow 0.3s;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+      rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+  }
+}
+
+@media (max-width: 655px) {
+  .edit__profile__modal {
+    width: 100%;
+  }
+  .edit__title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}
+@media (max-width: 520px) {
+  .edit__profile__title {
+    font-size: 18px;
+    font-weight: 900;
+  }
+  .items__name,
+  .items__description,
+  .items__password {
+    flex-direction: column;
+  }
+  .items__name label,
+  .items__description label,
+  .items__password label {
+    width: 100%;
+  }
+}

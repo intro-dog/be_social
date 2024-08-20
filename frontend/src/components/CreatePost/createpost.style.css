@@ -100,12 +100,16 @@
   font-size: 18px;
   transition: transform 0.2s;
 }
-
 /* emoji */
-.button {
+.create-post__btn {
+  cursor: pointer;
   z-index: 49;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  transition: background-color 0.3s;
 }
-
 @media (any-hover: hover) {
   .create-post__icon:hover {
     transform: scale(1.1);
@@ -115,6 +119,10 @@
   }
   .emoji__items span:hover {
     transform: scale(1.2);
+  }
+
+  .create-post__btn:hover {
+    background-color: #ccc;
   }
 }
 

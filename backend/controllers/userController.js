@@ -22,21 +22,17 @@ class userController {
 
   get_suggested_users = async (req, res) => {
     try {
+      if (!req.user) {
+        throw new Error("User not authenticated")
+      }
+
       const userId = req.user._id
 
       const usersFollowedByMe = await User.findById(userId).select("following")
 
       const users = await User.aggregate([
-        {
-          $match: {
-            _id: { $ne: userId },
-          },
-        },
-        {
-          $sample: {
-            size: 5,
-          },
-        },
+        { $match: { _id: { $ne: userId } } },
+        { $sample: { size: 5 } },
       ])
 
       const filteredUsers = users.filter(
@@ -176,6 +172,12 @@ class userController {
 
         const uploadedResponse = await cloudinary.uploader.upload(coverImg)
         coverImg = uploadedResponse.secure_url
+      }
+
+      if (username && username.includes(" ")) {
+        return responseReturn(res, 400, {
+          error: "Username cannot contain spaces",
+        })
       }
 
       user.fullName = fullName || user.fullName

@@ -8,7 +8,6 @@ export const get_suggested_users = createAsyncThunk(
       const { data } = await api.get("/suggested", {
         withCredentials: true,
       })
-
       return fulfillWithValue(data)
     } catch (error) {
       return rejectWithValue(error.response.data)
@@ -35,10 +34,7 @@ export const userReducer = createSlice({
   initialState: {
     isLoading: false,
     users: [],
-    user: {
-      following: [],
-      followers: [],
-    },
+    user: {},
   },
   reducers: {},
 

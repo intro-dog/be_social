@@ -51,6 +51,34 @@ export const logout = createAsyncThunk(
   }
 )
 
+export const get_me = createAsyncThunk(
+  "auth/get_me",
+  async (_, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get("/me", {
+        withCredentials: true,
+      })
+      return fulfillWithValue(data)
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
+export const update_user = createAsyncThunk(
+  "auth/update_user",
+  async (info, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post("/update", info, {
+        withCredentials: true,
+      })
+      return fulfillWithValue(data)
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
 const decodeToken = (token) => {
   if (token) {
     const userInfo = jwtDecode(token)
@@ -59,13 +87,14 @@ const decodeToken = (token) => {
     return ""
   }
 }
-// End Method
 
 export const authReducer = createSlice({
   name: "auth",
   initialState: {
     isLoading: false,
+    isUpdating: false,
     userInfo: decodeToken(localStorage.getItem("token")),
+    user: {},
     errorMessage: "",
     successMessage: "",
   },
@@ -106,20 +135,53 @@ export const authReducer = createSlice({
       state.successMessage = payload.message
       state.isLoading = false
       state.userInfo = ""
+      state.user = {}
     })
+
     builder.addCase(signup.rejected, (state, { payload }) => {
       state.errorMessage = payload?.error || payload?.message || "Signup failed"
       state.isLoading = false
     })
 
     builder.addCase(login.rejected, (state, { payload }) => {
-      state.errorMessage = payload?.error || payload?.message || "Login failed"
+      state.errorMessage = payload?.error
       state.isLoading = false
     })
 
     builder.addCase(logout.rejected, (state, { payload }) => {
-      state.errorMessage = payload?.error || payload?.message || "Logout failed"
+      // state.errorMessage = payload?.error
       state.isLoading = false
+    })
+
+    builder.addCase(get_me.pending, (state, { payload }) => {
+      state.isLoading = true
+    })
+
+    builder.addCase(get_me.fulfilled, (state, { payload }) => {
+      state.isLoading = false
+      state.user = payload
+    })
+
+    builder.addCase(get_me.rejected, (state, { payload }) => {
+      state.errorMessage =
+        payload?.error || payload?.message || "Something went wrong"
+      state.isUpdating = false
+    })
+
+    builder.addCase(update_user.pending, (state, { payload }) => {
+      state.isUpdating = true
+    })
+
+    builder.addCase(update_user.rejected, (state, { payload }) => {
+      state.errorMessage =
+        payload?.error || payload?.message || "Something went wrong"
+      state.isUpdating = false
+    })
+
+    builder.addCase(update_user.fulfilled, (state, { payload }) => {
+      state.successMessage = payload.message || "User updated successfully"
+      state.isUpdating = false
+      state.user = payload
     })
   },
 })
