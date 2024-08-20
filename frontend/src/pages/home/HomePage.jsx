@@ -30,7 +30,7 @@ const HomePage = () => {
     } else {
       navigate("/login")
     }
-  }, [successMessage, errorMessage])
+  }, [successMessage, errorMessage, userInfo])
 
   return (
     <>

@@ -13,7 +13,7 @@ const SuggestedPanel = () => {
 
   useEffect(() => {
     dispatch(get_suggested_users())
-  }, [dispatch])
+  }, [])
 
   const handlers = useSwipeable({
     onSwipedLeft: () => handleSwipe("left"),

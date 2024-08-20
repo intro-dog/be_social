@@ -44,6 +44,12 @@ const LoginPage = () => {
       toast.error(errorMessage)
       dispatch(messageClear())
     }
+
+    if (userInfo) {
+      navigate("/")
+    } else {
+      navigate("/login")
+    }
   }, [successMessage, errorMessage, userInfo])
 
   return (
