@@ -18,7 +18,7 @@ cloudinary.config({
 
 app.use(
   cors({
-    origin: ["https://be-social-y14j.onrender.com", "http://localhost:5173"],
+    origin: ["https://be-social-9xj3.onrender.com", "http://localhost:5173"],
     credentials: true,
   })
 )
