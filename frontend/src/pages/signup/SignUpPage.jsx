@@ -54,6 +54,12 @@ const SignUpPage = () => {
       toast.error(errorMessage)
       dispatch(messageClear())
     }
+
+    if (userInfo) {
+      navigate("/")
+    } else {
+      navigate("/signup")
+    }
   }, [successMessage, errorMessage, userInfo])
 
   return (

@@ -10,7 +10,7 @@ import SuggestedPanel from "../SuggestedPanel/SuggestedPanel"
 import "./feed.style.css"
 const Feed = () => {
   const { userInfo } = useSelector((state) => state.auth)
-  const { posts, isLoading } = useSelector((state) => state.post)
+  const { posts } = useSelector((state) => state.post)
   const dispatch = useDispatch()
 
   useEffect(() => {

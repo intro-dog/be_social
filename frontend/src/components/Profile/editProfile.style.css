@@ -90,7 +90,22 @@ body.modal-open {
   box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px,
     rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
 }
-
+.edit__form__password--label {
+  display: flex;
+  position: relative;
+  align-items: center;
+  gap: 10px;
+}
+.edit__form__password--label input {
+  padding-right: 35px;
+}
+.password__toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
 @media (any-hover: hover) {
   .close__icon:hover {
     transform: scale(1.1);

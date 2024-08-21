@@ -20,14 +20,17 @@ function App() {
       )}
       <Routes>
         <Route path="*" element={<h1>404</h1>} />
-        {token && <Route path="/" element={<HomePage />} />}
-        {!token && <Route path="/login" element={<LoginPage />} />}
+
         <Route path="/" element={<HomePage />} />
+
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/me/:username" element={<MyProfiile />} />
-        <Route path="/profile/:username" element={<ProfilePage />} />
-        <Route path="notifications" element={<NotificationsPage />} />
+
+        {!token && <Route path="/signup" element={<SignUpPage />} />}
+        {token && <Route path="/me/:username" element={<MyProfiile />} />}
+        {token && <Route path="/profile/:username" element={<ProfilePage />} />}
+        {token && (
+          <Route path="notifications" element={<NotificationsPage />} />
+        )}
       </Routes>
     </BrowserRouter>
   )

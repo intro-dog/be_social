@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
+import toast from "react-hot-toast"
 import {
   FaArrowLeft,
   FaCalendar,
@@ -14,10 +15,14 @@ import Sidebar from "../../components/Sidebar/Sidebar"
 import { get_me, update_user } from "../../store/reducers/authReducer"
 import { get_user_posts } from "../../store/reducers/postReducer"
 import EditProfile from "./../../components/Profile/EditProfile"
+import { delete_post, messageClear } from "./../../store/reducers/postReducer"
 import { formatDate } from "./../../utils/formatDate/formatDate"
+
 const MyProfile = () => {
   const { user } = useSelector((state) => state.auth)
-  const { posts, isLoading } = useSelector((state) => state.post)
+  const { posts, isLoading, successMessage, errorMessage } = useSelector(
+    (state) => state.post
+  )
 
   const [coverImg, setCoverImg] = useState(null)
   const [profileImg, setProfileImg] = useState(null)
@@ -25,6 +30,7 @@ const MyProfile = () => {
   const profileImgRef = useRef(null)
 
   const dispatch = useDispatch()
+
   const handleImgChange = (e, state) => {
     const file = e.target.files[0]
     if (file) {
@@ -40,12 +46,32 @@ const MyProfile = () => {
   const handleUpdate = async () => {
     dispatch(update_user({ coverImg, profileImg }))
   }
+  const handleDeletePost = async (postId) => {
+    await dispatch(delete_post(postId))
+  }
+  useEffect(() => {
+    if (!user) {
+      dispatch(get_me())
+    }
+  }, [dispatch, user])
 
   useEffect(() => {
-    dispatch(get_me())
+    if (user?.username) {
+      dispatch(get_user_posts(user.username))
+    }
+  }, [dispatch, user?.username])
 
-    dispatch(get_user_posts(user?.username))
-  }, [user?.username])
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage)
+      dispatch(messageClear())
+    }
+
+    if (errorMessage) {
+      toast.error(errorMessage)
+      dispatch(messageClear())
+    }
+  }, [successMessage, errorMessage])
 
   return (
     <>
@@ -192,7 +218,10 @@ const MyProfile = () => {
                           </div>
 
                           <div className="posts__actions">
-                            <MdDeleteOutline size={20} />
+                            <MdDeleteOutline
+                              size={20}
+                              onClick={() => handleDeletePost(post?._id)}
+                            />
                           </div>
                         </div>
                         <div className="posts__text">

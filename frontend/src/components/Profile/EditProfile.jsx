@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
-import { IoMdCloseCircle } from "react-icons/io"
+import { IoMdCloseCircle, IoMdEye, IoMdEyeOff } from "react-icons/io"
 import { useDispatch, useSelector } from "react-redux"
 import { messageClear } from "../../store/reducers/postReducer"
 import { update_user } from "./../../store/reducers/authReducer"
@@ -11,6 +11,7 @@ const EditProfile = ({ user }) => {
   const { isUpdating, successMessage, errorMessage } = useSelector(
     (state) => state.auth
   )
+
   const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     fullName: "",
@@ -32,12 +33,17 @@ const EditProfile = ({ user }) => {
     currentPassword: "",
   })
 
+  // Додаємо стан для відстеження видимості пароля
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false)
+  const [showNewPassword, setShowNewPassword] = useState(false)
+
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     })
   }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     dispatch(update_user(formData))
@@ -62,14 +68,15 @@ const EditProfile = ({ user }) => {
   useEffect(() => {
     if (successMessage) {
       toast.success(successMessage)
-      closeModal()
       dispatch(messageClear())
+      closeModal()
     }
     if (errorMessage) {
       toast.error(errorMessage)
       dispatch(messageClear())
     }
   }, [successMessage, errorMessage])
+
   const openModal = () => {
     document.getElementById("edit__profile_modal").showModal()
     document.body.classList.add("modal-open")
@@ -176,31 +183,60 @@ const EditProfile = ({ user }) => {
               </div>
 
               <div className="items__password">
-                <input
-                  id="currentPassword"
-                  className="edit__form__password"
-                  type="password"
-                  autoComplete="new-password"
-                  placeholder="Current Password"
-                  name="currentPassword"
-                  value={formData.currentPassword}
-                  onChange={handleInputChange}
-                />
-
-                <input
-                  id="newPassword"
-                  className="edit__form__password"
-                  type="password"
-                  autoComplete="new-password"
-                  placeholder="New Password"
-                  name="newPassword"
-                  value={formData.newPassword}
-                  onChange={handleInputChange}
-                />
+                <label
+                  htmlFor="currentPassword"
+                  className="edit__form__password--label"
+                >
+                  <input
+                    id="currentPassword"
+                    className="edit__form__password"
+                    type={showCurrentPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    placeholder="Current Password"
+                    name="currentPassword"
+                    value={formData.currentPassword}
+                    onChange={handleInputChange}
+                  />
+                  <span
+                    className="password__toggle"
+                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  >
+                    {!showCurrentPassword ? (
+                      <IoMdEyeOff size={20} />
+                    ) : (
+                      <IoMdEye size={20} />
+                    )}
+                  </span>
+                </label>
+                <label
+                  htmlFor="newPassword"
+                  className="edit__form__password--label"
+                >
+                  <input
+                    id="newPassword"
+                    className="edit__form__password"
+                    type={showNewPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    placeholder="New Password"
+                    name="newPassword"
+                    value={formData.newPassword}
+                    onChange={handleInputChange}
+                  />
+                  <span
+                    className="password__toggle"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                  >
+                    {!showNewPassword ? (
+                      <IoMdEyeOff size={20} />
+                    ) : (
+                      <IoMdEye size={20} />
+                    )}
+                  </span>
+                </label>
               </div>
 
               <button className="edit__form__btn">
-                {isUpdating ? "Loading..." : "Update"}
+                {isUpdating ? "Updating..." : "Update"}
               </button>
             </div>
           </form>

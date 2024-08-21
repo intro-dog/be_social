@@ -170,6 +170,7 @@ export const authReducer = createSlice({
 
     builder.addCase(update_user.pending, (state, { payload }) => {
       state.isUpdating = true
+      state.isLoading = true
     })
 
     builder.addCase(update_user.rejected, (state, { payload }) => {
@@ -181,6 +182,7 @@ export const authReducer = createSlice({
     builder.addCase(update_user.fulfilled, (state, { payload }) => {
       state.successMessage = payload.message || "User updated successfully"
       state.isUpdating = false
+      state.isLoading = false
       state.user = payload
     })
   },
