@@ -33,7 +33,6 @@ const EditProfile = ({ user }) => {
     currentPassword: "",
   })
 
-  // Додаємо стан для відстеження видимості пароля
   const [showCurrentPassword, setShowCurrentPassword] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
 
@@ -99,7 +98,7 @@ const EditProfile = ({ user }) => {
           <div className="edit__profile__modal__header">
             <div className="edit__profile__modal__title edit__title">
               <h3 className="edit__profile__title">Update your profile</h3>
-              <span className="edit__profile__updatedAd">
+              <span className="edit__profile__updatedAt">
                 last update {formatDate(user?.updatedAt)}
               </span>
             </div>

@@ -1,10 +1,11 @@
 import React, { useEffect } from "react"
-import { FaRegComment, FaRegHeart } from "react-icons/fa"
+import { FaRegHeart } from "react-icons/fa"
 import { MdDeleteOutline } from "react-icons/md"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { delete_post, get_all_posts } from "../../store/reducers/postReducer"
 import { formatDate } from "../../utils/formatDate/formatDate"
+import Comments from "../Comments/Comments"
 import CreatePost from "../CreatePost/CreatePost"
 import SuggestedPanel from "../SuggestedPanel/SuggestedPanel"
 import "./feed.style.css"
@@ -85,12 +86,12 @@ const Feed = () => {
               )}
               <div className="posts__stats">
                 <div className="stats__info">
-                  <FaRegComment size={15} />
-                  <span>{post?.comments?.length}</span>
+                  <Comments post={post} userInfo={userInfo} />
+                  <span className="counter">{post?.comments?.length}</span>
                 </div>
                 <div className="stats__info">
                   <FaRegHeart size={15} />
-                  <span>{post?.likes?.length}</span>
+                  <span className="counter">{post?.likes?.length}</span>
                 </div>
               </div>
             </div>

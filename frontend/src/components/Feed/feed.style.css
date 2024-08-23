@@ -2,7 +2,9 @@
   margin-left: 200px;
   width: 70%;
 }
-
+.counter {
+  font-size: 14px;
+}
 @media (any-hover: hover) {
   .underline:hover {
     text-decoration: underline;
