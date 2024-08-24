@@ -11,7 +11,9 @@ import SuggestedPanel from "../SuggestedPanel/SuggestedPanel"
 import "./feed.style.css"
 const Feed = () => {
   const { userInfo } = useSelector((state) => state.auth)
-  const { posts } = useSelector((state) => state.post)
+  const { posts, isLoading, errorMessage, successMessage } = useSelector(
+    (state) => state.post
+  )
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -86,7 +88,14 @@ const Feed = () => {
               )}
               <div className="posts__stats">
                 <div className="stats__info">
-                  <Comments post={post} userInfo={userInfo} />
+                  <Comments
+                    post={post}
+                    userInfo={userInfo}
+                    posts={posts}
+                    isLoading={isLoading}
+                    errorMessage={errorMessage}
+                    successMessage={successMessage}
+                  />
                   <span className="counter">{post?.comments?.length}</span>
                 </div>
                 <div className="stats__info">

@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       toastOptions={{
         position: "top-right",
         style: {
-          zIndex: 9999,
+          zIndex: 999,
           background: "#283046",
           color: "white",
         },

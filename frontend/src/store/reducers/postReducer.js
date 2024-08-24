@@ -65,6 +65,41 @@ export const delete_post = createAsyncThunk(
   }
 )
 
+export const comment_post = createAsyncThunk(
+  "post/comment_post",
+  async ({ id, info }, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post(
+        `/comment/${id}`,
+        { text: info },
+        {
+          withCredentials: true,
+        }
+      )
+      return fulfillWithValue(data)
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
+export const delete_comment = createAsyncThunk(
+  "post/delete_comment",
+  async ({ postId, commentId }, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.delete(
+        `/comment/delete/${postId}/${commentId}`,
+        {
+          withCredentials: true,
+        }
+      )
+      return fulfillWithValue(data)
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
 export const postReducer = createSlice({
   name: "post",
   initialState: {
@@ -128,6 +163,51 @@ export const postReducer = createSlice({
       state.isDeleting = false
       state.successMessage = payload.message || "Post deleted successfully"
       state.posts = state.posts.filter((post) => post._id !== payload._id)
+    })
+
+    builder.addCase(comment_post.fulfilled, (state, { payload }) => {
+      state.posts = state.posts.map((post) => {
+        if (post._id === payload._id) {
+          return {
+            ...post,
+            comments: payload.comments,
+          }
+        } else {
+          return post
+        }
+      })
+      state.isLoading = false
+    })
+
+    builder.addCase(comment_post.rejected, (state, { payload }) => {
+      state.errorMessage = payload?.error || "An unexpected error occurred"
+      state.isLoading = false
+    })
+
+    builder.addCase(comment_post.pending, (state, { payload }) => {
+      state.isLoading = true
+    })
+
+    builder.addCase(delete_comment.fulfilled, (state, { payload }) => {
+      state.posts = state.posts.map((post) => {
+        if (post._id === payload._id) {
+          return {
+            ...post,
+            comments: [...payload.comments],
+          }
+        } else {
+          return post
+        }
+      })
+      state.isLoading = false
+    })
+    builder.addCase(delete_comment.rejected, (state, { payload }) => {
+      state.errorMessage = payload?.error || "An unexpected error occurred"
+      state.isLoading = false
+    })
+
+    builder.addCase(delete_comment.pending, (state, { payload }) => {
+      state.isLoading = true
     })
   },
 })

@@ -19,7 +19,7 @@
 }
 .create-post__img img {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 10px;
 }

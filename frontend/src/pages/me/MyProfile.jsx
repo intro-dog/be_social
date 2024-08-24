@@ -1,22 +1,20 @@
 import React, { useEffect, useRef, useState } from "react"
 import toast from "react-hot-toast"
-import {
-  FaArrowLeft,
-  FaCalendar,
-  FaLink,
-  FaRegComment,
-  FaRegHeart,
-} from "react-icons/fa"
+import { FaArrowLeft, FaCalendar, FaLink, FaRegHeart } from "react-icons/fa"
 import { MdDeleteOutline, MdEdit } from "react-icons/md"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { FadeLoader } from "react-spinners"
+import Comments from "../../components/Comments/Comments"
+import EditProfile from "../../components/Profile/EditProfile"
 import Sidebar from "../../components/Sidebar/Sidebar"
 import { get_me, update_user } from "../../store/reducers/authReducer"
-import { get_user_posts } from "../../store/reducers/postReducer"
-import EditProfile from "./../../components/Profile/EditProfile"
-import { delete_post, messageClear } from "./../../store/reducers/postReducer"
-import { formatDate } from "./../../utils/formatDate/formatDate"
+import {
+  delete_post,
+  get_user_posts,
+  messageClear,
+} from "../../store/reducers/postReducer"
+import { formatDate } from "../../utils/formatDate/formatDate"
 
 const MyProfile = () => {
   const { user } = useSelector((state) => state.auth)
@@ -49,6 +47,7 @@ const MyProfile = () => {
   const handleDeletePost = async (postId) => {
     await dispatch(delete_post(postId))
   }
+
   useEffect(() => {
     if (!user) {
       dispatch(get_me())
@@ -237,7 +236,13 @@ const MyProfile = () => {
                   )}
                   <div className="posts__stats">
                     <div className="stats__info">
-                      <FaRegComment size={15} />
+                      <Comments
+                        post={post}
+                        userInfo={user}
+                        isLoading={isLoading}
+                        errorMessage={errorMessage}
+                        successMessage={successMessage}
+                      />
                       <span>{post?.comments?.length}</span>
                     </div>
                     <div className="stats__info">

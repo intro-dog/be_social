@@ -1,16 +1,28 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 import { AiTwotoneCloseCircle } from "react-icons/ai"
 import { FaRegComment } from "react-icons/fa"
+import { MdOutlineDeleteOutline } from "react-icons/md"
+import { useDispatch } from "react-redux"
 import { Link } from "react-router-dom"
+import {
+  comment_post,
+  delete_comment,
+  messageClear,
+} from "../../store/reducers/postReducer"
 import "./comments.style.css"
-const Comments = ({ post, userInfo }) => {
+const Comments = ({
+  post,
+  userInfo,
+  isLoading,
+  errorMessage,
+  successMessage,
+}) => {
   const [comment, setComment] = useState("")
-  console.log("post", post)
-
+  const dispatch = useDispatch()
   const isCommenting = userInfo._id === post.user._id
   const openModal = () => {
     document.getElementById(`comments_modal${post._id}`).showModal()
-    console.log(post._id)
     document.body.classList.add("modal-open")
   }
 
@@ -21,7 +33,20 @@ const Comments = ({ post, userInfo }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    dispatch(comment_post({ id: post._id, info: comment }))
+    setComment("")
   }
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast(errorMessage)
+      dispatch(messageClear())
+    }
+    if (successMessage) {
+      toast.success(successMessage)
+      dispatch(messageClear())
+    }
+  }, [errorMessage, successMessage, dispatch])
 
   return (
     <>
@@ -64,16 +89,36 @@ const Comments = ({ post, userInfo }) => {
               </div>
 
               <div className="comments__modal__info">
-                <Link
-                  to={`/profile/${comment?.user?.username}`}
-                  className="comments__modal__name"
-                >
-                  {comment?.user?.fullName}
-                </Link>
-                <span className="comments__modal__username">
-                  @{comment?.user?.username}
-                </span>
-                <p className="comments__modal__text">{comment?.text}</p>
+                <div className="comments__modal__info__content">
+                  <Link
+                    to={
+                      comment?.user?._id === userInfo?._id
+                        ? `/me/${userInfo?.username}`
+                        : `/profile/${post?.user?.username}`
+                    }
+                    className="comments__modal__name"
+                  >
+                    {comment?.user?.fullName}
+                  </Link>
+                  <span className="comments__modal__username">
+                    @{comment?.user?.username}
+                  </span>
+                  <p className="comments__modal__text">{comment?.text}</p>
+                </div>
+                {!isCommenting && (
+                  <MdOutlineDeleteOutline
+                    className="comments__modal__delete"
+                    size={20}
+                    onClick={() =>
+                      dispatch(
+                        delete_comment({
+                          postId: post._id,
+                          commentId: comment._id,
+                        })
+                      )
+                    }
+                  />
+                )}
               </div>
             </div>
           ))}
@@ -96,7 +141,7 @@ const Comments = ({ post, userInfo }) => {
                 }
                 disabled={isCommenting}
               >
-                Comment
+                {isLoading ? "Loading..." : "Comment"}
               </button>
             </form>
           </div>

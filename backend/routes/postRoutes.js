@@ -10,6 +10,11 @@ router.post("/create", protectRoute, postController.create_post)
 router.post("/like/:id", protectRoute, postController.like_unlike_post)
 router.post("/update/:id", protectRoute, postController.update_post)
 router.post("/comment/:id", protectRoute, postController.comment_post)
+router.delete(
+  "/comment/delete/:postId/:commentId",
+  protectRoute,
+  postController.delete_comment
+)
 router.delete("/delete/:id", protectRoute, postController.delete_post)
 
 module.exports = router

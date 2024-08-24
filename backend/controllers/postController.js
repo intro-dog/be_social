@@ -4,6 +4,7 @@ const Notification = require("../models/notificationModel")
 const { responseReturn } = require("../util/response")
 const { json } = require("body-parser")
 const cloudinary = require("cloudinary").v2
+const mongoose = require("mongoose")
 
 class postController {
   get_all_posts = async (req, res) => {
@@ -224,12 +225,12 @@ class postController {
       const { text } = req.body
       const postId = req.params.id
       const userId = req.user._id
+      const post = await Post.findById(postId)
 
       if (!text) {
         return responseReturn(res, 400, { error: "Text is required" })
       }
 
-      const post = await Post.findById(postId)
       if (!post) {
         return responseReturn(res, 404, { error: "Post not found" })
       }
@@ -241,7 +242,41 @@ class postController {
       post.comments.push(newComment)
       await post.save()
 
-      responseReturn(res, 201, post)
+      const updatedPost = await Post.findById(postId).populate("comments.user")
+
+      responseReturn(res, 201, updatedPost)
+    } catch (error) {
+      responseReturn(res, 500, { error: error.message })
+    }
+  }
+
+  delete_comment = async (req, res) => {
+    try {
+      const { postId, commentId } = req.params
+
+      if (
+        !mongoose.Types.ObjectId.isValid(postId) ||
+        !mongoose.Types.ObjectId.isValid(commentId)
+      ) {
+        return responseReturn(res, 400, { error: "Invalid post or comment ID" })
+      }
+
+      const post = await Post.findById(postId).populate("comments.user")
+      if (!post) {
+        return responseReturn(res, 404, { error: "Post not found" })
+      }
+
+      const commentIndex = post.comments.findIndex(
+        (comment) => comment._id.toString() === commentId
+      )
+      if (commentIndex === -1) {
+        return responseReturn(res, 404, { error: "Comment not found" })
+      }
+
+      post.comments.splice(commentIndex, 1)
+      await post.save()
+
+      responseReturn(res, 200, post)
     } catch (error) {
       responseReturn(res, 500, { error: error.message })
     }
