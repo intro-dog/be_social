@@ -7,13 +7,13 @@
 @media (max-width: 768px) {
   .home,
   .profile {
-    padding-left: 10px;
+    padding-left: 25px;
     gap: 10px;
     width: 100%;
     margin: 0;
   }
   .feed {
-    padding-left: 22px;
+    margin-left: 25px;
     width: 100%;
     margin: 0;
   }

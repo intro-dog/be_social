@@ -1,5 +1,4 @@
 const Notification = require("../models/notificationModel")
-const User = require("../models/userModel")
 const { responseReturn } = require("../util/response")
 
 class notificationController {

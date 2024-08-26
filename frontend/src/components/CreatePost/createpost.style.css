@@ -12,6 +12,7 @@
 .create-post__avatar img {
   border-radius: 50%;
   width: 32px;
+  height: 32px;
 }
 .create-post__img {
   position: relative;
