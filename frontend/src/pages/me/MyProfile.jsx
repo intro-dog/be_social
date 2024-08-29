@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react"
 import toast from "react-hot-toast"
-import { FaArrowLeft, FaCalendar, FaLink, FaRegHeart } from "react-icons/fa"
+import { FaArrowLeft, FaCalendar, FaLink } from "react-icons/fa"
 import { MdDeleteOutline, MdEdit } from "react-icons/md"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { FadeLoader } from "react-spinners"
 import Comments from "../../components/Comments/Comments"
+import LikeButton from "../../components/LikeButton/LikeButton"
 import EditProfile from "../../components/Profile/EditProfile"
 import Sidebar from "../../components/Sidebar/Sidebar"
 import { get_me, update_user } from "../../store/reducers/authReducer"
@@ -242,12 +243,13 @@ const MyProfile = () => {
                         isLoading={isLoading}
                         errorMessage={errorMessage}
                         successMessage={successMessage}
+                        canComment={false}
+                        viewOnly={true}
                       />
                       <span>{post?.comments?.length}</span>
                     </div>
                     <div className="stats__info">
-                      <FaRegHeart size={15} />
-                      <span>{post?.likes?.length}</span>
+                      <LikeButton post={post} />
                     </div>
                   </div>
                 </div>

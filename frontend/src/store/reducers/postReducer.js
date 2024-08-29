@@ -100,6 +100,21 @@ export const delete_comment = createAsyncThunk(
   }
 )
 
+export const like_unlike_post = createAsyncThunk(
+  "post/like_unlike_post",
+  async (id, { rejectWithValue }) => {
+    try {
+      const { data } = await api.post(
+        `/like/${id}`,
+        {},
+        { withCredentials: true }
+      )
+      return data
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
 export const postReducer = createSlice({
   name: "post",
   initialState: {
@@ -207,6 +222,20 @@ export const postReducer = createSlice({
     })
 
     builder.addCase(delete_comment.pending, (state, { payload }) => {
+      state.isLoading = true
+    })
+
+    builder.addCase(like_unlike_post.fulfilled, (state, { payload }) => {
+      state.posts = state.posts.map((post) =>
+        post._id === payload._id ? { ...post, likes: payload.likes } : post
+      )
+    })
+
+    builder.addCase(like_unlike_post.rejected, (state, { payload }) => {
+      state.errorMessage = payload?.error || "An unexpected error occurred"
+    })
+
+    builder.addCase(like_unlike_post.pending, (state, { payload }) => {
       state.isLoading = true
     })
   },

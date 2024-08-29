@@ -1,3 +1,5 @@
+// Comments.js
+
 import React, { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { AiTwotoneCloseCircle } from "react-icons/ai"
@@ -11,16 +13,20 @@ import {
   messageClear,
 } from "../../store/reducers/postReducer"
 import "./comments.style.css"
+
 const Comments = ({
   post,
   userInfo,
   isLoading,
   errorMessage,
   successMessage,
+  canComment,
+  viewOnly,
+  isOwnProfile,
 }) => {
   const [comment, setComment] = useState("")
   const dispatch = useDispatch()
-  const isCommenting = userInfo._id === post.user._id
+
   const openModal = () => {
     document.getElementById(`comments_modal${post._id}`).showModal()
     document.body.classList.add("modal-open")
@@ -33,20 +39,30 @@ const Comments = ({
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    dispatch(comment_post({ id: post._id, info: comment }))
-    setComment("")
+    if (canComment) {
+      dispatch(comment_post({ id: post._id, info: comment }))
+      setComment("")
+    }
   }
 
   useEffect(() => {
-    if (errorMessage) {
-      toast(errorMessage)
-      dispatch(messageClear())
-    }
     if (successMessage) {
       toast.success(successMessage)
-      dispatch(messageClear())
+      const timer = setTimeout(() => {
+        dispatch(messageClear())
+      }, 3000)
+
+      return () => clearTimeout(timer)
     }
-  }, [errorMessage, successMessage, dispatch])
+    if (errorMessage) {
+      toast.error(errorMessage)
+      const timer = setTimeout(() => {
+        dispatch(messageClear())
+      }, 3000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [successMessage, errorMessage, dispatch])
 
   return (
     <>
@@ -71,20 +87,19 @@ const Comments = ({
               />
             </form>
           </div>
-
           {post?.comments?.length === 0 && (
             <span className="comments__modal__empty">
               No comments yet. Feel free to leave your first one😉
             </span>
           )}
-
           {post?.comments?.map((comment, index) => (
             <div className="comments__modal__item" key={index}>
               <div className="comments__modal__avatar">
                 <img
                   className="comments__modal__img"
+                  style={{ width: "40px", height: "40px", borderRadius: "50%" }}
                   src={comment?.user?.profileImg || "/avatar-placeholder.png"}
-                  alt={comment?.comments?.user?.username}
+                  alt={comment?.user?.username}
                 />
               </div>
 
@@ -105,7 +120,7 @@ const Comments = ({
                   </span>
                   <p className="comments__modal__text">{comment?.text}</p>
                 </div>
-                {!isCommenting && (
+                {!viewOnly && comment?.user?._id === userInfo?._id && (
                   <MdOutlineDeleteOutline
                     className="comments__modal__delete"
                     size={20}
@@ -122,7 +137,20 @@ const Comments = ({
               </div>
             </div>
           ))}
-
+          {!viewOnly && comment?.user?._id === userInfo?._id && (
+            <MdOutlineDeleteOutline
+              className="comments__modal__delete"
+              size={20}
+              onClick={() =>
+                dispatch(
+                  delete_comment({
+                    postId: post._id,
+                    commentId: comment._id,
+                  })
+                )
+              }
+            />
+          )}
           <div className="comments__modal__body">
             <form className="comments__modal__form" onSubmit={handleSubmit}>
               <textarea
@@ -132,15 +160,7 @@ const Comments = ({
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
               />
-
-              <button
-                className={
-                  isCommenting
-                    ? "comments__modal__submit--disabled"
-                    : "comments__modal__submit"
-                }
-                disabled={isCommenting}
-              >
+              <button className="comments__modal__submit" disabled={isLoading}>
                 {isLoading ? "Loading..." : "Comment"}
               </button>
             </form>

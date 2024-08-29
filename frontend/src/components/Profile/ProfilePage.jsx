@@ -1,31 +1,31 @@
+// ProfilePage.js
+
 import React, { useEffect } from "react"
-import {
-  FaArrowLeft,
-  FaCalendar,
-  FaLink,
-  FaRegComment,
-  FaRegHeart,
-} from "react-icons/fa"
+import { FaArrowLeft, FaCalendar, FaLink } from "react-icons/fa"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useParams } from "react-router-dom"
 import { FadeLoader } from "react-spinners"
 import { get_user_posts } from "../../store/reducers/postReducer"
 import { get_user_profile } from "../../store/reducers/userReducer"
+import Comments from "../Comments/Comments"
+import LikeButton from "../LikeButton/LikeButton"
 import { formatDate } from "./../../utils/formatDate/formatDate"
 import Sidebar from "./../Sidebar/Sidebar"
 import "./profile.style.css"
+
 const ProfilePage = () => {
-  const { user } = useSelector((state) => state.user)
+  const { userInfo } = useSelector((state) => state.auth)
+  const { user, errorMessage, successMessage } = useSelector(
+    (state) => state.user
+  )
   const { posts, isLoading } = useSelector((state) => state.post)
   const { username } = useParams()
   const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(get_user_profile(username))
-  }, [])
 
   useEffect(() => {
+    dispatch(get_user_profile(username))
     dispatch(get_user_posts(username))
-  }, [])
+  }, [dispatch, username])
 
   return (
     <>
@@ -58,7 +58,6 @@ const ProfilePage = () => {
                 <div className="profile__info__details">
                   <div className="details__icons">
                     <FaLink size={14} />
-
                     <Link className="profile__link" to={`${user?.link}`}>
                       {user?.link || "No link"}
                     </Link>
@@ -142,12 +141,21 @@ const ProfilePage = () => {
                     )}
                     <div className="posts__stats">
                       <div className="stats__info">
-                        <FaRegComment size={15} />
-                        <span>{post?.comments?.length}</span>
+                        <Comments
+                          post={post}
+                          userInfo={userInfo}
+                          isLoading={isLoading}
+                          errorMessage={errorMessage}
+                          successMessage={successMessage}
+                          canComment={true}
+                          viewOnly={false}
+                        />
+                        <span className="counter">
+                          {post?.comments?.length}
+                        </span>
                       </div>
                       <div className="stats__info">
-                        <FaRegHeart size={15} />
-                        <span>{post?.likes?.length}</span>
+                        <LikeButton post={post} />
                       </div>
                     </div>
                   </div>

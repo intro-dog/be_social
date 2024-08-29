@@ -65,6 +65,7 @@
 .comments__modal__delete {
   cursor: pointer;
 }
+
 .comments__modal__img {
   width: 40px;
   height: 40px;
@@ -72,6 +73,9 @@
 }
 .comments__modal__img img {
   width: 100%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
 .comments__modal__body {

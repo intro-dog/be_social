@@ -32,7 +32,14 @@ const notificationsReducer = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(get_notifications.fulfilled, (state, { payload }) => {
-      state.notifications = payload
+      const filteredNotifications = payload.filter((notification) => {
+        return (
+          notification.type !== "like" ||
+          notification.from._id !== notification.to._id
+        )
+      })
+
+      state.notifications = filteredNotifications
       state.isLoading = false
     })
 

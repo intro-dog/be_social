@@ -1,5 +1,4 @@
 import React, { useEffect } from "react"
-import { FaRegHeart } from "react-icons/fa"
 import { MdDeleteOutline } from "react-icons/md"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
@@ -7,6 +6,7 @@ import { delete_post, get_all_posts } from "../../store/reducers/postReducer"
 import { formatDate } from "../../utils/formatDate/formatDate"
 import Comments from "../Comments/Comments"
 import CreatePost from "../CreatePost/CreatePost"
+import LikeButton from "../LikeButton/LikeButton"
 import SuggestedPanel from "../SuggestedPanel/SuggestedPanel"
 import "./feed.style.css"
 const Feed = () => {
@@ -18,7 +18,7 @@ const Feed = () => {
 
   useEffect(() => {
     dispatch(get_all_posts())
-  }, [])
+  }, [dispatch])
 
   const handleDeletePost = async (postId) => {
     await dispatch(delete_post(postId))
@@ -91,16 +91,16 @@ const Feed = () => {
                   <Comments
                     post={post}
                     userInfo={userInfo}
-                    posts={posts}
                     isLoading={isLoading}
                     errorMessage={errorMessage}
                     successMessage={successMessage}
+                    canComment={userInfo._id !== post.user._id}
+                    viewOnly={false}
                   />
                   <span className="counter">{post?.comments?.length}</span>
                 </div>
                 <div className="stats__info">
-                  <FaRegHeart size={15} />
-                  <span className="counter">{post?.likes?.length}</span>
+                  <LikeButton post={post} />
                 </div>
               </div>
             </div>
