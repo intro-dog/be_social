@@ -94,7 +94,7 @@ const Feed = () => {
                     isLoading={isLoading}
                     errorMessage={errorMessage}
                     successMessage={successMessage}
-                    canComment={userInfo._id !== post.user._id}
+                    canComment={true}
                     viewOnly={false}
                   />
                   <span className="counter">{post?.comments?.length}</span>

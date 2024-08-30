@@ -29,14 +29,35 @@ export const get_user_profile = createAsyncThunk(
   }
 )
 
+export const follow_user = createAsyncThunk(
+  "user/follow_user",
+  async (id, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post(`/follow/${id}`, {
+        withCredentials: true,
+      })
+      return fulfillWithValue(data)
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
 export const userReducer = createSlice({
   name: "user",
   initialState: {
     isLoading: false,
+    errorMessage: "",
+    successMessage: "",
     users: [],
     user: {},
   },
-  reducers: {},
+  reducers: {
+    clearMessage: (state) => {
+      state.errorMessage = ""
+      state.successMessage = ""
+    },
+  },
 
   extraReducers: (builder) => {
     builder.addCase(get_suggested_users.pending, (state, { payload }) => {
@@ -62,7 +83,29 @@ export const userReducer = createSlice({
       state.isLoading = false
       state.user = payload
     })
+
+    builder.addCase(follow_user.pending, (state, { payload }) => {
+      state.isLoading = true
+    })
+
+    builder.addCase(follow_user.rejected, (state, { payload }) => {
+      state.errorMessage = payload.error
+      state.isLoading = false
+    })
+
+    builder.addCase(follow_user.fulfilled, (state, { payload }) => {
+      state.successMessage = payload.message
+      state.isLoading = false
+
+      if (state.user._id === payload.userId) {
+        state.user = {
+          ...state.user,
+          followers: payload.followers,
+        }
+      }
+    })
   },
 })
 
+export const { clearMessage } = userReducer.actions
 export default userReducer.reducer

@@ -1,17 +1,12 @@
 // Comments.js
 
-import React, { useEffect, useState } from "react"
-import toast from "react-hot-toast"
+import React, { useState } from "react"
 import { AiTwotoneCloseCircle } from "react-icons/ai"
 import { FaRegComment } from "react-icons/fa"
 import { MdOutlineDeleteOutline } from "react-icons/md"
 import { useDispatch } from "react-redux"
 import { Link } from "react-router-dom"
-import {
-  comment_post,
-  delete_comment,
-  messageClear,
-} from "../../store/reducers/postReducer"
+import { comment_post, delete_comment } from "../../store/reducers/postReducer"
 import "./comments.style.css"
 
 const Comments = ({
@@ -44,25 +39,6 @@ const Comments = ({
       setComment("")
     }
   }
-
-  useEffect(() => {
-    if (successMessage) {
-      toast.success(successMessage)
-      const timer = setTimeout(() => {
-        dispatch(messageClear())
-      }, 3000)
-
-      return () => clearTimeout(timer)
-    }
-    if (errorMessage) {
-      toast.error(errorMessage)
-      const timer = setTimeout(() => {
-        dispatch(messageClear())
-      }, 3000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [successMessage, errorMessage, dispatch])
 
   return (
     <>

@@ -1,12 +1,15 @@
-// ProfilePage.js
-
 import React, { useEffect } from "react"
+import toast from "react-hot-toast"
 import { FaArrowLeft, FaCalendar, FaLink } from "react-icons/fa"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useParams } from "react-router-dom"
 import { FadeLoader } from "react-spinners"
 import { get_user_posts } from "../../store/reducers/postReducer"
-import { get_user_profile } from "../../store/reducers/userReducer"
+import {
+  clearMessage,
+  follow_user,
+  get_user_profile,
+} from "../../store/reducers/userReducer"
 import Comments from "../Comments/Comments"
 import LikeButton from "../LikeButton/LikeButton"
 import { formatDate } from "./../../utils/formatDate/formatDate"
@@ -15,10 +18,11 @@ import "./profile.style.css"
 
 const ProfilePage = () => {
   const { userInfo } = useSelector((state) => state.auth)
-  const { user, errorMessage, successMessage } = useSelector(
+  const { user, isLoading, errorMessage, successMessage } = useSelector(
     (state) => state.user
   )
-  const { posts, isLoading } = useSelector((state) => state.post)
+
+  const { posts } = useSelector((state) => state.post)
   const { username } = useParams()
   const dispatch = useDispatch()
 
@@ -26,6 +30,24 @@ const ProfilePage = () => {
     dispatch(get_user_profile(username))
     dispatch(get_user_posts(username))
   }, [dispatch, username])
+
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage)
+      dispatch(clearMessage())
+    }
+
+    if (errorMessage) {
+      toast.error(errorMessage)
+      dispatch(clearMessage())
+    }
+  }, [errorMessage, successMessage, user?.followers])
+
+  const handleFollow = () => {
+    dispatch(follow_user(user?._id)).then(() => {
+      dispatch(get_user_profile(username)) // Явно запрашиваем данные профиля после подписки
+    })
+  }
 
   return (
     <>
@@ -87,6 +109,16 @@ const ProfilePage = () => {
                     {user?.followers?.length === 1 ? "Follower" : "Followers"}
                   </span>
                 </div>
+              </div>
+              <div className="profile__info__buttons">
+                <button
+                  className="profile__info__buttons--follow"
+                  onClick={handleFollow}
+                >
+                  {user?.followers?.includes(userInfo?._id)
+                    ? "Unfollow"
+                    : "Follow"}
+                </button>
               </div>
             </div>
 

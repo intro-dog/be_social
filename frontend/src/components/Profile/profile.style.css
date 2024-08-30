@@ -147,6 +147,13 @@
 .profile__counter {
   font-weight: 900;
 }
+.profile__info__buttons--follow,
+.profile__info__buttons--unfollow {
+  padding: 10px 12px;
+  border-radius: 12px;
+  transition: transform 0.3s;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
 hr {
   border: 3px solid #666;
   margin-bottom: 15px;
@@ -272,6 +279,10 @@ hr {
   }
 
   .posts__actions:hover {
+    transform: scale(1.1);
+  }
+  .profile__info__buttons--follow:hover,
+  .profile__info__buttons--unfollow:hover {
     transform: scale(1.1);
   }
 }

@@ -195,7 +195,7 @@ export const postReducer = createSlice({
     })
 
     builder.addCase(comment_post.rejected, (state, { payload }) => {
-      state.errorMessage = payload?.error || "An unexpected error occurred"
+      state.errorMessage = payload.error
       state.isLoading = false
     })
 

@@ -16,18 +16,34 @@ export const get_notifications = createAsyncThunk(
   }
 )
 
+export const delete_notifications = createAsyncThunk(
+  "notifications/delete_notifications",
+  async (_, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.delete("/notifications/delete", {
+        withCredentials: true,
+      })
+      console.log("delete_notifications", data)
+      return fulfillWithValue(data)
+    } catch (error) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
 const notificationsReducer = createSlice({
   name: "notifications",
   initialState: {
     notifications: [],
-    isLoading: "",
+    isLoading: false,
     errorMessage: "",
     successMessage: "",
   },
 
   reducers: {
-    messageClear: (state, _) => {
+    messageClear: (state) => {
       state.errorMessage = ""
+      state.successMessage = ""
     },
   },
   extraReducers: (builder) => {
@@ -43,11 +59,26 @@ const notificationsReducer = createSlice({
       state.isLoading = false
     })
 
-    builder.addCase(get_notifications.pending, (state, { payload }) => {
+    builder.addCase(get_notifications.pending, (state) => {
       state.isLoading = true
     })
 
     builder.addCase(get_notifications.rejected, (state, { payload }) => {
+      state.errorMessage = payload.error || "An error occurred"
+      state.isLoading = false
+    })
+
+    builder.addCase(delete_notifications.fulfilled, (state, { payload }) => {
+      state.notifications = []
+      state.successMessage = payload.message
+      state.isLoading = false
+    })
+
+    builder.addCase(delete_notifications.pending, (state) => {
+      state.isLoading = true
+    })
+
+    builder.addCase(delete_notifications.rejected, (state, { payload }) => {
       state.errorMessage = payload.error || "An error occurred"
       state.isLoading = false
     })

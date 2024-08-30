@@ -1,13 +1,17 @@
 import React, { useEffect } from "react"
+import { toast } from "react-hot-toast"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { FadeLoader } from "react-spinners"
-import { get_notifications } from "../../store/reducers/notificationsReducer"
+import {
+  delete_notifications,
+  get_notifications,
+} from "../../store/reducers/notificationsReducer"
 import Sidebar from "./../../components/Sidebar/Sidebar"
 import { formatDate } from "./../../utils/formatDate/formatDate"
 import "./notifications.style.css"
 const NotificationsPage = () => {
-  const { isLoading, notifications } = useSelector(
+  const { isLoading, notifications, successMessage } = useSelector(
     (state) => state.notifications
   )
   const { user } = useSelector((state) => state.auth)
@@ -16,6 +20,13 @@ const NotificationsPage = () => {
   useEffect(() => {
     dispatch(get_notifications())
   }, [dispatch])
+
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage)
+      dispatch(messageClear())
+    }
+  }, [successMessage])
 
   return (
     <div>
@@ -29,7 +40,14 @@ const NotificationsPage = () => {
         <div className="notifications__content">
           <div className="notifications__header">
             <h2 className="notifications__title">Your notifications</h2>
-            {/* <button>Delete all</button> */}
+            {notifications?.length > 0 && (
+              <button
+                className="delete_notifications"
+                onClick={() => dispatch(delete_notifications())}
+              >
+                Delete all
+              </button>
+            )}
           </div>
           <div className="notifications__items">
             {notifications?.length === 0 && <p>No notifications</p>}
@@ -53,6 +71,11 @@ const NotificationsPage = () => {
                     {notification.type === "like" && (
                       <p className="notifications__item__text">
                         liked your photo.
+                      </p>
+                    )}
+                    {notification.type === "unfollow" && (
+                      <p className="notifications__item__text">
+                        unfollowed you.
                       </p>
                     )}
                     {notification.type === "follow" && (
